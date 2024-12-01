@@ -4,12 +4,22 @@ import Timeline from "./Timeline";
 interface SideBarProps {
   children?: React.ReactNode;
   count: number;
-  setCount: (val: number) => void;
+  setCount: (count: number) => void;
+  instruments: string[];
+  setInstruments: (
+    instruments: any
+  ) => void;
 }
 
 export const SideBar: React.FC<
   SideBarProps
-> = ({ children, setCount, count }) => {
+> = ({
+  children,
+  setCount,
+  count,
+  instruments,
+  setInstruments,
+}) => {
   return (
     <div className="w-full h-full flex flex-col bg-neutral-900">
       <Timeline
@@ -17,7 +27,10 @@ export const SideBar: React.FC<
         setCount={setCount}
         count={count}
       />
-      <Instruments />
+      <Instruments
+        instruments={instruments}
+        setInstruments={setInstruments}
+      />
       {children}
     </div>
   );

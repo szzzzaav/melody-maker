@@ -8,18 +8,25 @@ const Beat: React.FC<
   BeatMakerProps
 > = () => {
   const [col, setCol] = useState(4);
+  const [instruments, setInstruments] =
+    useState([]);
+
   return (
     <div className="w-full h-full rounded-l-lg bg-neutral-900 flex flex-row p-1 overflow-auto custom-scrollbar gap-1 items-start justify-start">
       <div className="sticky left-2 z-20">
         <SideBar
           count={col}
           setCount={setCol}
+          instruments={instruments}
+          setInstruments={
+            setInstruments
+          }
         />
       </div>
       <div className="ml-8">
         <TrackContainer
           col={col}
-          rol={16}
+          rol={instruments.length}
         />
       </div>
     </div>

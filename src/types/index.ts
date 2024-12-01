@@ -1,5 +1,5 @@
-export interface InstrumentRow {
-  id: string;
-  instrument: string;
+export interface Instrument {
+  id: number;
+  type: string;
   pitch: string;
 }
