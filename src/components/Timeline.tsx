@@ -10,24 +10,22 @@ import {
 
 interface TimelineProps {
   initialDuration?: number;
-  onDurationChange?: (
-    duration: number
-  ) => void;
+  count: number;
+  setCount: (val: number) => void;
 }
 
 const Timeline: React.FC<
   TimelineProps
 > = ({
   initialDuration = 1,
-  onDurationChange,
+  count,
+  setCount,
 }) => {
   const [duration, setDuration] =
     useState(initialDuration);
-  const [count, setCount] = useState(4);
   const handleAddTime = () => {
     const newDuration = duration + 1;
     setDuration(newDuration);
-    onDurationChange?.(newDuration);
     setCount(count + 4);
   };
 
@@ -35,7 +33,6 @@ const Timeline: React.FC<
     if (duration > 1) {
       const newDuration = duration - 1;
       setDuration(newDuration);
-      onDurationChange?.(newDuration);
       setCount(count - 4);
     }
   };

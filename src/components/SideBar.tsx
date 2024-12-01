@@ -3,23 +3,19 @@ import Timeline from "./Timeline";
 
 interface SideBarProps {
   children?: React.ReactNode;
+  count: number;
+  setCount: (val: number) => void;
 }
 
 export const SideBar: React.FC<
   SideBarProps
-> = ({ children }) => {
+> = ({ children, setCount, count }) => {
   return (
     <div className="w-full h-full flex flex-col bg-neutral-900">
       <Timeline
         initialDuration={1}
-        onDurationChange={(
-          duration
-        ) => {
-          console.log(
-            "Duration changed:",
-            duration
-          );
-        }}
+        setCount={setCount}
+        count={count}
       />
       <Instruments />
       {children}
