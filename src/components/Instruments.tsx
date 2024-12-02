@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { InstrumentModal } from "./InstrumentModal";
+
 interface InstrumentsProps {
   instruments: string[];
   setInstruments: (
@@ -11,10 +14,20 @@ export const Instruments: React.FC<
   instruments,
   setInstruments,
 }) => {
+  const [isModalOpen, setIsModalOpen] =
+    useState(false);
+
   const handleAddInstrument = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleInstrumentSelect = (
+    instrument: string,
+    pitch: string
+  ) => {
     setInstruments([
       ...instruments,
-      "piano",
+      `${instrument}-${pitch}`,
     ]);
   };
 
@@ -38,6 +51,15 @@ export const Instruments: React.FC<
       >
         + Add Instrument
       </button>
+      <InstrumentModal
+        isOpen={isModalOpen}
+        onClose={() =>
+          setIsModalOpen(false)
+        }
+        onSelect={
+          handleInstrumentSelect
+        }
+      />
     </div>
   );
 };
