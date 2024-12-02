@@ -1,5 +1,6 @@
 import { useState } from "react";
 import VolumeKnob from "./VolumeKnob";
+import RangeSlider from "./RangeSlider";
 
 interface InstrumentModalProps {
   isOpen: boolean;
@@ -47,6 +48,8 @@ export const InstrumentModal: React.FC<
     setSelectedOctave,
   ] = useState("");
 
+  const [value, setValue] = useState(0);
+
   const handleSelect = () => {
     if (
       selectedNote &&
@@ -69,39 +72,23 @@ export const InstrumentModal: React.FC<
           选择乐器和音高
         </h2>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <h3 className="text-neutral-200 mb-2">
             音符
           </h3>
-          <div className="w-full h-auto p-4">
+          <div className="w-full h-auto p-2">
             <VolumeKnob />
           </div>
         </div>
 
         <div className="mb-4">
-          <h3 className="text-neutral-200 mb-2">
-            八度
-          </h3>
-          <div className="grid grid-cols-4 gap-2">
-            {octaves.map((octave) => (
-              <button
-                key={octave}
-                onClick={() =>
-                  setSelectedOctave(
-                    octave
-                  )
-                }
-                className={`p-2 rounded ${
-                  selectedOctave ===
-                  octave
-                    ? "bg-blue-500"
-                    : "bg-neutral-700"
-                } text-neutral-200`}
-              >
-                {octave}
-              </button>
-            ))}
-          </div>
+          <RangeSlider
+            value={value}
+            onChange={(value) =>
+              setValue(value)
+            }
+            label="1"
+          ></RangeSlider>
         </div>
 
         <div className="flex justify-end gap-2">
