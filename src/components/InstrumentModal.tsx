@@ -1,7 +1,14 @@
 import { useState } from "react";
 import VolumeKnob from "./VolumeKnob";
 import RangeSlider from "./RangeSlider";
-import { GiTunePitch } from "react-icons/gi";
+import {
+  GiDrumKit,
+  GiGuitar,
+  GiTunePitch,
+  GiGuitarBassHead,
+} from "react-icons/gi";
+import { CgPiano } from "react-icons/cg";
+import { IoMdMusicalNote } from "react-icons/io";
 
 interface InstrumentModalProps {
   isOpen: boolean;
@@ -37,9 +44,20 @@ const octaves = [
   "8",
 ];
 
+const instruments = {
+  piano: <CgPiano />,
+  guitar: <GiGuitar />,
+  drums: <GiDrumKit />,
+  bass: <GiGuitarBassHead />,
+};
+
 export const InstrumentModal: React.FC<
   InstrumentModalProps
 > = ({ isOpen, onClose, onSelect }) => {
+  const [
+    selectedInstrument,
+    setSelectedInstrument,
+  ] = useState("piano");
   const [
     selectedNote,
     setSelectedNote,
@@ -55,9 +73,11 @@ export const InstrumentModal: React.FC<
       selectedOctave
     ) {
       onSelect(
-        "piano",
+        selectedInstrument,
         `${selectedNote}${selectedOctave}`
       );
+      setSelectedNote("");
+      setSelectedOctave("");
       onClose();
     }
   };
@@ -70,10 +90,40 @@ export const InstrumentModal: React.FC<
         <h2 className="text-neutral-200 text-lg mb-4">
           <GiTunePitch />
         </h2>
-
         <div className="mb-2">
-          <h3 className="text-neutral-200 mb-2 w-full flex items-center justify-center">
-            {`${selectedNote} ${selectedOctave}`}
+          <div className="grid grid-cols-2 gap-4">
+            {Object.entries(
+              instruments
+            ).map(([name, icon]) => (
+              <button
+                key={name}
+                onClick={() =>
+                  setSelectedInstrument(
+                    name
+                  )
+                }
+                className={`flex items-center justify-center gap-2 p-4 rounded-lg transition-colors ${
+                  selectedInstrument ===
+                  name
+                    ? "bg-indigo-600 text-white"
+                    : "bg-neutral-700 text-neutral-300 hover:bg-neutral-600"
+                }`}
+              >
+                <span className="text-2xl">
+                  {icon}
+                </span>
+                <span className="capitalize">
+                  {name}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-neutral-200 w-full flex items-center justify-center">
+            {`${selectedNote}-${selectedOctave}` || (
+              <IoMdMusicalNote />
+            )}
           </h3>
           <div className="w-full h-auto p-2">
             <VolumeKnob
