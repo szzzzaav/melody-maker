@@ -1,4 +1,5 @@
 import { useState } from "react";
+import VolumeKnob from "./VolumeKnob";
 
 interface InstrumentModalProps {
   isOpen: boolean;
@@ -72,22 +73,8 @@ export const InstrumentModal: React.FC<
           <h3 className="text-neutral-200 mb-2">
             音符
           </h3>
-          <div className="grid grid-cols-4 gap-2">
-            {notes.map((note) => (
-              <button
-                key={note}
-                onClick={() =>
-                  setSelectedNote(note)
-                }
-                className={`p-2 rounded ${
-                  selectedNote === note
-                    ? "bg-indigo-600"
-                    : "bg-neutral-700"
-                } text-neutral-200 hover:bg-orange-600 ease-in-out duration-300`}
-              >
-                {note}
-              </button>
-            ))}
+          <div className="w-full h-auto p-4">
+            <VolumeKnob />
           </div>
         </div>
 

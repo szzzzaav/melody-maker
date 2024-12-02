@@ -2,16 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   background-color: black;
 }
 
 .grid-cols-30 {
-  grid-template-columns: repeat(30, minmax(0, 1fr));
+  grid-template-columns: repeat(
+    30,
+    minmax(0, 1fr)
+  );
 }
 
 .grid-cols-32 {
-  grid-template-columns: repeat(32, minmax(0, 1fr));
+  grid-template-columns: repeat(
+    32,
+    minmax(0, 1fr)
+  );
 }
 
 .custom-scrollbar {
@@ -39,4 +45,26 @@ body{
 
 .custom-scrollbar::-webkit-scrollbar-corner {
   background: #2d2d2d;
+}
+
+circle {
+  fill: none;
+}
+
+circle:nth-child(1) {
+  stroke-width: 15px;
+  stroke-dasharray: 660;
+  transform-origin: center;
+  transform: rotate(135deg);
+  stroke-linecap: round;
+}
+circle:nth-child(2) {
+  stroke-width: 15px;
+  stroke-dasharray: 880;
+  stroke-dashoffset: calc(
+    880 - (660 * 0) / 100
+  );
+  transform-origin: center;
+  transform: rotate(135deg);
+  stroke-linecap: round;
 }
