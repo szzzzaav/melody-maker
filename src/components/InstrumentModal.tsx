@@ -1,6 +1,7 @@
 import { useState } from "react";
 import VolumeKnob from "./VolumeKnob";
 import RangeSlider from "./RangeSlider";
+import { GiTunePitch } from "react-icons/gi";
 
 interface InstrumentModalProps {
   isOpen: boolean;
@@ -48,8 +49,6 @@ export const InstrumentModal: React.FC<
     setSelectedOctave,
   ] = useState("");
 
-  const [value, setValue] = useState(0);
-
   const handleSelect = () => {
     if (
       selectedNote &&
@@ -66,47 +65,53 @@ export const InstrumentModal: React.FC<
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-neutral-800 p-4 rounded-lg w-96">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 w-auto h-auto">
+      <div className="bg-neutral-800 p-6 rounded-lg w-96">
         <h2 className="text-neutral-200 text-lg mb-4">
-          选择乐器和音高
+          <GiTunePitch />
         </h2>
 
         <div className="mb-2">
-          <h3 className="text-neutral-200 mb-2">
-            音符
+          <h3 className="text-neutral-200 mb-2 w-full flex items-center justify-center">
+            {`${selectedNote} ${selectedOctave}`}
           </h3>
           <div className="w-full h-auto p-2">
-            <VolumeKnob />
+            <VolumeKnob
+              note={selectedNote}
+              notes={notes}
+              setNote={setSelectedNote}
+            />
           </div>
         </div>
 
         <div className="mb-4">
           <RangeSlider
-            value={value}
-            onChange={(value) =>
-              setValue(value)
+            selectedOctave={
+              selectedOctave
             }
-            label="1"
-          ></RangeSlider>
+            setSelectedOctave={
+              setSelectedOctave
+            }
+            octaves={octaves}
+          />
         </div>
 
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-neutral-700 text-neutral-200 rounded"
+            className="px-4 py-2 bg-orange-600 text-neutral-200 rounded"
           >
-            取消
+            Cancel
           </button>
           <button
             onClick={handleSelect}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            className="px-4 py-2 bg-indigo-600 text-white rounded"
             disabled={
               !selectedNote ||
               !selectedOctave
             }
           >
-            确定
+            Confirm
           </button>
         </div>
       </div>

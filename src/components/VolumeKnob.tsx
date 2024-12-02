@@ -3,7 +3,16 @@ import {
   useRef,
 } from "react";
 
-const VolumeKnob = () => {
+interface VolumeKnobProps {
+  note: string;
+  notes: string[];
+  setNote: (note: any) => void;
+}
+
+const VolumeKnob: React.FC<
+  VolumeKnobProps
+> = ({ note, notes, setNote }) => {
+  const eachLength = 270 / notes.length;
   const [isRotating, setIsRotating] =
     useState(false);
   const knobRef =
@@ -49,6 +58,10 @@ const VolumeKnob = () => {
         circleRef.current!.style.strokeDashoffset = `${
           880 - 660 * progressPercent
         }`;
+        let noteIndex = Math.floor(
+          rotateAngle / eachLength
+        );
+        setNote(notes[noteIndex]);
       }
     }
   };
@@ -72,7 +85,7 @@ const VolumeKnob = () => {
         >
           <div className="rotator w-[180px] h-[180px] bg-neutral-950 rounded-full flex items-center  shadow-md shadow-black relative z-[1]">
             <div className="select-none w-[40px] h-[40px] mx-0 my-[15px] text-sm text-neutral-200 flex items-start justify-center">
-              0
+              {note}
             </div>
           </div>
           <div
