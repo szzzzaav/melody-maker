@@ -9,6 +9,7 @@ import {
 } from "react-icons/gi";
 import { CgPiano } from "react-icons/cg";
 import { IoMdMusicalNote } from "react-icons/io";
+import * as Tone from "tone";
 
 interface InstrumentModalProps {
   isOpen: boolean;
@@ -21,17 +22,17 @@ interface InstrumentModalProps {
 
 const notes = [
   "A",
-  "A#",
+  "Ab",
   "B",
   "C",
-  "C#",
+  "Cb",
   "D",
-  "D#",
+  "Db",
   "E",
   "F",
-  "F#",
+  "Fb",
   "G",
-  "G#",
+  "Gb",
 ];
 const octaves = [
   "1",
@@ -146,25 +147,78 @@ export const InstrumentModal: React.FC<
           />
         </div>
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-between gap-2 mt-4">
           <button
-            onClick={onClose}
-            className="px-4 py-2 bg-orange-600 text-neutral-200 rounded"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleSelect}
-            className="px-4 py-2 bg-indigo-600 text-white rounded"
+            onClick={() => {
+              if (
+                selectedNote &&
+                selectedOctave
+              ) {
+                playInstrumentSound(
+                  selectedInstrument,
+                  `${selectedNote}${selectedOctave}`
+                );
+              }
+            }}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
             disabled={
               !selectedNote ||
               !selectedOctave
             }
           >
-            Confirm
+            <div className="flex items-center gap-2">
+              <span>试听</span>
+              <IoMdMusicalNote />
+            </div>
           </button>
+
+          <div className="flex gap-2">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-orange-600 text-neutral-200 rounded hover:bg-orange-700 transition-colors"
+            >
+              取消
+            </button>
+            <button
+              onClick={handleSelect}
+              className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors"
+              disabled={
+                !selectedNote ||
+                !selectedOctave
+              }
+            >
+              确认
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
+};
+
+const playInstrumentSound = async (
+  instrument: string,
+  note: string
+) => {
+  try {
+    await Tone.start();
+    const sampler = new Tone.Sampler({
+      urls: {
+        [note]: `${note}.mp3`,
+      },
+      baseUrl: `/sounds/${instrument}/`,
+      onload: () => {
+        sampler.triggerAttackRelease(
+          note,
+          "1n"
+        );
+        // 播放完成后释放资源
+        setTimeout(() => {
+          sampler.dispose();
+        }, 2000);
+      },
+    }).toDestination();
+  } catch (err) {
+    console.error("音频播放失败:", err);
+  }
 };
