@@ -3,11 +3,18 @@ import { InstrumentModal } from "./InstrumentModal";
 import { instrumentIcons } from "../constants/instrumentIcons";
 import { IoIosSettings } from "react-icons/io";
 import { FaDeleteLeft } from "react-icons/fa6";
+import { getRandomHexColor } from "../utils/getRandomColor";
+
+type Instrument = {
+  name: string;
+  color: string;
+  data: [];
+};
 
 interface InstrumentsProps {
-  instruments: string[];
+  instruments: Instrument[];
   setInstruments: (
-    instruments: string[]
+    instruments: Instrument[]
   ) => void;
 }
 
@@ -36,15 +43,21 @@ export const Instruments: React.FC<
       const newInstruments = [
         ...instruments,
       ];
-      newInstruments[
-        editingIndex
-      ] = `${instrument}-${pitch}`;
+      newInstruments[editingIndex] = {
+        ...instruments[editingIndex],
+        name: `${instrument}-${pitch}`,
+      };
       setInstruments(newInstruments);
       setEditingIndex(null);
     } else {
+      const color = getRandomHexColor();
       setInstruments([
         ...instruments,
-        `${instrument}-${pitch}`,
+        {
+          name: `${instrument}-${pitch}`,
+          color: color,
+          data: [],
+        },
       ]);
     }
     setIsModalOpen(false);
@@ -72,7 +85,7 @@ export const Instruments: React.FC<
       {instruments.map(
         (item, index) => {
           const instrumentName =
-            item.split("-")[0];
+            item.name.split("-")[0];
           return (
             <div
               key={index}
@@ -80,6 +93,13 @@ export const Instruments: React.FC<
             >
               <div className="w-full h-[95%] text-neutral-200 font-medium flex items-center justify-between px-2 rounded border-neutral-700 border-[1px] box-border bg-neutral-700">
                 <div className="flex items-center">
+                  <span
+                    className="w-4 h-4 rounded-full mr-1"
+                    style={{
+                      backgroundColor:
+                        item.color,
+                    }}
+                  ></span>
                   <span className="mr-2">
                     {
                       instrumentIcons[
@@ -87,7 +107,9 @@ export const Instruments: React.FC<
                       ]
                     }
                   </span>
-                  {item}
+                  <span>
+                    {item.name}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button

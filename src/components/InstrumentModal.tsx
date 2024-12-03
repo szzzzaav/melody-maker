@@ -131,7 +131,7 @@ export const InstrumentModal: React.FC<
       return (
         <>
           <div>
-            <h3 className="text-neutral-200 w-full flex items-center justify-center">
+            <h3 className="text-neutral-200 w-full flex items-center justify-center select-none">
               {`${selectedNote}-${selectedOctave}` || (
                 <IoMdMusicalNote />
               )}

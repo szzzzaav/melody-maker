@@ -49,7 +49,7 @@ const RangeSlider: React.FC<
     <div className="flex flex-col items-center w-full max-w-md mx-auto">
       <div className="flex justify-between w-full mb-2">
         <div className="flex items-center justify-center px-3 w-full py-1">
-          <span className="text-white">
+          <span className="text-white select-none">
             {selectedOctave || `degree`}
           </span>
         </div>

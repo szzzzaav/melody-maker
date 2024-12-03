@@ -1,5 +1,9 @@
 import { InstrumentRanges } from "../types/instruments";
-
+export type Instrument = {
+  name: string;
+  color: string;
+  data: [];
+};
 export const instrumentRanges: Record<
   string,
   InstrumentRanges

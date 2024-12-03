@@ -1,13 +1,19 @@
 import { Instruments } from "./Instruments";
 import Timeline from "./Timeline";
 
+type Instrument = {
+  name: string;
+  color: string;
+  data: [];
+};
+
 interface SideBarProps {
   children?: React.ReactNode;
   count: number;
   setCount: (count: number) => void;
-  instruments: string[];
+  instruments: Instrument[];
   setInstruments: (
-    instruments: any
+    instruments: Instrument[]
   ) => void;
 }
 

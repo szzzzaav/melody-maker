@@ -15,3 +15,9 @@ export type InstrumentName =
   | "guitar"
   | "bass"
   | "drums";
+
+export type Instrument = {
+  name: string;
+  color: string;
+  data: [];
+};

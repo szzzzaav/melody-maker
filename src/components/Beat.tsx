@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SideBar } from "./SideBar";
 import { TrackContainer } from "./TrackContainer";
+import { Instrument } from "../types/instruments";
 
 interface BeatMakerProps {}
 
@@ -9,7 +10,7 @@ const Beat: React.FC<
 > = () => {
   const [col, setCol] = useState(4);
   const [instruments, setInstruments] =
-    useState([]);
+    useState<Instrument[]>([]);
 
   return (
     <div className="w-full h-full rounded-l-lg bg-neutral-900 flex flex-row p-1 overflow-auto custom-scrollbar gap-1 items-start justify-start">
