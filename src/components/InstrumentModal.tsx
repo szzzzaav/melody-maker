@@ -20,36 +20,80 @@ interface InstrumentModalProps {
   ) => void;
 }
 
-const notes = [
-  "A",
-  "Ab",
-  "B",
-  "C",
-  "Cb",
-  "D",
-  "Db",
-  "E",
-  "F",
-  "Fb",
-  "G",
-  "Gb",
-];
-const octaves = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-];
-
 const instruments = {
   piano: <CgPiano />,
   guitar: <GiGuitar />,
   drums: <GiDrumKit />,
   bass: <GiGuitarBassHead />,
+};
+
+// 添加乐器音域范围的配置
+const instrumentRanges = {
+  piano: {
+    notes: [
+      "A",
+      "Ab",
+      "B",
+      "C",
+      "Cb",
+      "D",
+      "Db",
+      "E",
+      "F",
+      "Fb",
+      "G",
+      "Gb",
+    ],
+    octaves: [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+    ],
+  },
+  guitar: {
+    notes: [
+      "A",
+      "Ab",
+      "B",
+      "C",
+      "Cb",
+      "D",
+      "Db",
+      "E",
+      "F",
+      "Fb",
+      "G",
+      "Gb",
+    ],
+    octaves: ["2", "3", "4", "5"],
+  },
+  bass: {
+    notes: [
+      "A",
+      "Ab",
+      "B",
+      "C",
+      "Cb",
+      "D",
+      "Db",
+      "E",
+      "F",
+      "Fb",
+      "G",
+      "Gb",
+    ],
+    octaves: ["1", "2", "3", "4"],
+  },
+  drums: {
+    notes: ["C"],
+    octaves: ["3", "4"],
+  },
 };
 
 export const InstrumentModal: React.FC<
@@ -67,6 +111,25 @@ export const InstrumentModal: React.FC<
     selectedOctave,
     setSelectedOctave,
   ] = useState("");
+
+  // 根据选择的乐器获取可用的音符和八度音
+  const availableNotes =
+    instrumentRanges[
+      selectedInstrument as keyof typeof instrumentRanges
+    ].notes;
+  const availableOctaves =
+    instrumentRanges[
+      selectedInstrument as keyof typeof instrumentRanges
+    ].octaves;
+
+  // 当乐器改变时重置音符和八度音的选择
+  const handleInstrumentChange = (
+    name: string
+  ) => {
+    setSelectedInstrument(name);
+    setSelectedNote("");
+    setSelectedOctave("");
+  };
 
   const handleSelect = () => {
     if (
@@ -99,7 +162,7 @@ export const InstrumentModal: React.FC<
               <button
                 key={name}
                 onClick={() =>
-                  setSelectedInstrument(
+                  handleInstrumentChange(
                     name
                   )
                 }
@@ -129,7 +192,7 @@ export const InstrumentModal: React.FC<
           <div className="w-full h-auto p-2">
             <VolumeKnob
               note={selectedNote}
-              notes={notes}
+              notes={availableNotes}
               setNote={setSelectedNote}
             />
           </div>
@@ -143,7 +206,7 @@ export const InstrumentModal: React.FC<
             setSelectedOctave={
               setSelectedOctave
             }
-            octaves={octaves}
+            octaves={availableOctaves}
           />
         </div>
 
