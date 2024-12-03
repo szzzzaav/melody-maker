@@ -21,9 +21,29 @@ const RangeSlider: React.FC<
 }) => {
   const [value, setValue] = useState(0);
   const eachLength =
-    100 / octaves.length;
+    100 / (octaves?.length || 1);
   const percentage =
     ((value - min) / (max - min)) * 100;
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = Number(
+      e.target.value
+    );
+    setValue(newValue);
+    const octaveIndex = Math.floor(
+      newValue / eachLength
+    );
+    if (
+      octaves &&
+      octaves[octaveIndex]
+    ) {
+      setSelectedOctave(
+        octaves[octaveIndex]
+      );
+    }
+  };
 
   return (
     <div className="flex flex-col items-center w-full max-w-md mx-auto">
@@ -56,20 +76,7 @@ const RangeSlider: React.FC<
           min={min}
           max={max}
           value={value}
-          onChange={(e) => {
-            setValue(
-              Number(e.target.value)
-            );
-            setSelectedOctave(
-              octaves[
-                Math.floor(
-                  Number(
-                    e.target.value
-                  ) / eachLength
-                )
-              ]
-            );
-          }}
+          onChange={handleChange}
           className="absolute w-full h-full opacity-0 cursor-pointer z-10"
           style={{
             appearance: "none",

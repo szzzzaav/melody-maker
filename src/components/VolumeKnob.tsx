@@ -61,7 +61,12 @@ const VolumeKnob: React.FC<
         let noteIndex = Math.floor(
           rotateAngle / eachLength
         );
-        setNote(notes[noteIndex]);
+        if (
+          noteIndex >= 0 &&
+          noteIndex < notes.length
+        ) {
+          setNote(notes[noteIndex]);
+        }
       }
     }
   };

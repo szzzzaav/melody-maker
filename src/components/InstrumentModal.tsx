@@ -10,6 +10,7 @@ import {
 import { CgPiano } from "react-icons/cg";
 import { IoMdMusicalNote } from "react-icons/io";
 import * as Tone from "tone";
+import instrumentRanges from "../constants/instrumentRanges";
 
 interface InstrumentModalProps {
   isOpen: boolean;
@@ -19,31 +20,6 @@ interface InstrumentModalProps {
     pitch: string
   ) => void;
 }
-
-const notes = [
-  "A",
-  "Ab",
-  "B",
-  "C",
-  "Cb",
-  "D",
-  "Db",
-  "E",
-  "F",
-  "Fb",
-  "G",
-  "Gb",
-];
-const octaves = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-];
 
 const instruments = {
   piano: <CgPiano />,
@@ -67,6 +43,28 @@ export const InstrumentModal: React.FC<
     selectedOctave,
     setSelectedOctave,
   ] = useState("");
+
+  // 根据选择的乐器获取可用的音符和八度音
+  const availableNotes = Object.keys(
+    instrumentRanges[
+      selectedInstrument as keyof typeof instrumentRanges
+    ]
+  );
+  const availableOctaves =
+    selectedNote && selectedInstrument
+      ? instrumentRanges[
+          selectedInstrument as keyof typeof instrumentRanges
+        ][selectedNote]
+      : [];
+
+  // 当乐器改变时重置音符和八度音的选择
+  const handleInstrumentChange = (
+    name: string
+  ) => {
+    setSelectedInstrument(name);
+    setSelectedNote("");
+    setSelectedOctave("");
+  };
 
   const handleSelect = () => {
     if (
@@ -99,7 +97,7 @@ export const InstrumentModal: React.FC<
               <button
                 key={name}
                 onClick={() =>
-                  setSelectedInstrument(
+                  handleInstrumentChange(
                     name
                   )
                 }
@@ -129,7 +127,7 @@ export const InstrumentModal: React.FC<
           <div className="w-full h-auto p-2">
             <VolumeKnob
               note={selectedNote}
-              notes={notes}
+              notes={availableNotes}
               setNote={setSelectedNote}
             />
           </div>
@@ -143,7 +141,7 @@ export const InstrumentModal: React.FC<
             setSelectedOctave={
               setSelectedOctave
             }
-            octaves={octaves}
+            octaves={availableOctaves}
           />
         </div>
 
@@ -160,7 +158,7 @@ export const InstrumentModal: React.FC<
                 );
               }
             }}
-            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
             disabled={
               !selectedNote ||
               !selectedOctave
