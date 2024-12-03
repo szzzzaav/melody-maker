@@ -12,6 +12,7 @@ const Beat: React.FC<
   const [instruments, setInstruments] =
     useState<Instrument[]>([]);
 
+  console.log(instruments);
   return (
     <div className="w-full h-full rounded-l-lg bg-neutral-900 flex flex-row p-1 overflow-auto custom-scrollbar gap-1 items-start justify-start relative">
       <div className="sticky left-2 z-20">

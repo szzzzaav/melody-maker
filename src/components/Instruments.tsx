@@ -8,7 +8,7 @@ import { getRandomHexColor } from "../utils/getRandomColor";
 type Instrument = {
   name: string;
   color: string;
-  data: [];
+  data: number[];
 };
 
 interface InstrumentsProps {
@@ -16,6 +16,7 @@ interface InstrumentsProps {
   setInstruments: (
     instruments: Instrument[]
   ) => void;
+  count: number;
 }
 
 export const Instruments: React.FC<
@@ -23,6 +24,7 @@ export const Instruments: React.FC<
 > = ({
   instruments,
   setInstruments,
+  count,
 }) => {
   const [isModalOpen, setIsModalOpen] =
     useState(false);
@@ -56,7 +58,10 @@ export const Instruments: React.FC<
         {
           name: `${instrument}-${pitch}`,
           color: color,
-          data: [],
+          data: Array.from(
+            { length: count },
+            () => 0
+          ),
         },
       ]);
     }

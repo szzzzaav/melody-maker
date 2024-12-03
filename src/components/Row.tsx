@@ -1,4 +1,5 @@
 import { twMerge } from "tailwind-merge";
+import RowItem from "./RowItem";
 
 interface RowProps {
   count: number;
@@ -45,22 +46,20 @@ const generateCells = (
           key={index}
           className="flex flex-row box-border "
         >
-          <div
+          <RowItem
             key={index + 0.1}
-            className="w-[35px] h-[35px] box-border text-xs border-[1px] border-neutral-700 border-l-slate-300"
-          ></div>
-          <div
+            className="border-l-slate-300"
+          ></RowItem>
+          <RowItem
             key={index + 0.2}
-            className="w-[35px] h-[35px] box-border text-xs border-[1px] border-neutral-700"
-          ></div>
-          <div
+          ></RowItem>
+          <RowItem
             key={index + 0.3}
-            className="w-[35px] h-[35px] box-border text-xs border-[1px] border-neutral-700"
-          ></div>
-          <div
+          ></RowItem>
+          <RowItem
             key={index + 0.4}
-            className="w-[35px] h-[35px] box-border text-xs border-[1px] border-neutral-700 border-r-slate-300"
-          ></div>
+            className=" border-r-slate-300"
+          ></RowItem>
         </div>
       );
     });

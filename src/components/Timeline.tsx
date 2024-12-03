@@ -7,11 +7,16 @@ import {
   AiOutlinePlus,
   AiOutlineMinus,
 } from "react-icons/ai";
+import { Instrument } from "../types/instruments";
 
 interface TimelineProps {
   initialDuration?: number;
   count: number;
   setCount: (val: number) => void;
+  setInstruments: (
+    val: Instrument[]
+  ) => void;
+  instruments: Instrument[];
 }
 
 const Timeline: React.FC<
@@ -20,6 +25,8 @@ const Timeline: React.FC<
   initialDuration = 1,
   count,
   setCount,
+  setInstruments,
+  instruments,
 }) => {
   const [duration, setDuration] =
     useState(initialDuration);
@@ -27,6 +34,18 @@ const Timeline: React.FC<
     const newDuration = duration + 1;
     setDuration(newDuration);
     setCount(count + 4);
+    setInstruments(
+      instruments.map((instrument) => ({
+        ...instrument,
+        data: [
+          ...instrument.data,
+          0,
+          0,
+          0,
+          0,
+        ],
+      }))
+    );
   };
 
   const handleReduceTime = () => {
@@ -34,6 +53,17 @@ const Timeline: React.FC<
       const newDuration = duration - 1;
       setDuration(newDuration);
       setCount(count - 4);
+      setInstruments(
+        instruments.map(
+          (instrument) => ({
+            ...instrument,
+            data: instrument.data.slice(
+              0,
+              -4
+            ),
+          })
+        )
+      );
     }
   };
 

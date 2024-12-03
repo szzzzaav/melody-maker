@@ -4,7 +4,7 @@ import Timeline from "./Timeline";
 type Instrument = {
   name: string;
   color: string;
-  data: [];
+  data: number[];
 };
 
 interface SideBarProps {
@@ -32,8 +32,11 @@ export const SideBar: React.FC<
         initialDuration={1}
         setCount={setCount}
         count={count}
+        setInstruments={setInstruments}
+        instruments={instruments}
       />
       <Instruments
+        count={count}
         instruments={instruments}
         setInstruments={setInstruments}
       />

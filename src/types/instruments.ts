@@ -19,5 +19,5 @@ export type InstrumentName =
 export type Instrument = {
   name: string;
   color: string;
-  data: [];
+  data: number[];
 };
