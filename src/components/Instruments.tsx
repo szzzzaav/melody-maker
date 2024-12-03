@@ -59,7 +59,7 @@ export const Instruments: React.FC<
           name: `${instrument}-${pitch}`,
           color: color,
           data: Array.from(
-            { length: count },
+            { length: count * 4 },
             () => 0
           ),
         },

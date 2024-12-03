@@ -39,10 +39,7 @@ const Timeline: React.FC<
         ...instrument,
         data: [
           ...instrument.data,
-          0,
-          0,
-          0,
-          0,
+          ...Array(16).fill(0),
         ],
       }))
     );
@@ -59,7 +56,7 @@ const Timeline: React.FC<
             ...instrument,
             data: instrument.data.slice(
               0,
-              -4
+              -16
             ),
           })
         )

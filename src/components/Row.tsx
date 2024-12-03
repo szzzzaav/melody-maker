@@ -1,46 +1,28 @@
-import { twMerge } from "tailwind-merge";
 import RowItem from "./RowItem";
+import { Instrument } from "../types/instruments";
 
 interface RowProps {
   count: number;
-  timeline?: boolean;
+  data: Instrument;
+  instrumentIndex: number;
+  setDataItem?: (
+    val: number,
+    index: number
+  ) => void;
 }
 
 const generateCells = (
   count: number,
-  timeline = false
+  data: Instrument,
+  instrumentIndex: number,
+  setDataItem?: (
+    val: number,
+    index: number
+  ) => void
 ) => {
-  let timeIdx = 0.9;
   return Array(count)
     .fill(null)
     .map((_, index) => {
-      if (timeline) {
-        timeIdx += 0.1;
-        timeIdx = Number(
-          timeIdx.toFixed(1)
-        );
-        if (
-          Math.abs(
-            (timeIdx % 1) - 0.4
-          ) < 0.0001
-        ) {
-          timeIdx =
-            Math.floor(timeIdx) + 1;
-        }
-        return (
-          <div
-            key={timeIdx}
-            className={twMerge(
-              "flex flex-row box-border border-r-[1px] border-neutral-700",
-              "w-[140px]"
-            )}
-          >
-            <div className="w-[140px] h-[35px] box-border text-xs text-neutral-200 font-semibold flex items-center pl-2">
-              {timeIdx.toFixed(1)}
-            </div>
-          </div>
-        );
-      }
       return (
         <div
           key={index}
@@ -49,15 +31,39 @@ const generateCells = (
           <RowItem
             key={index + 0.1}
             className="border-l-slate-300"
+            index={index * 4 + 0}
+            data={data}
+            instrumentIndex={
+              instrumentIndex
+            }
+            setDataItem={setDataItem}
           ></RowItem>
           <RowItem
             key={index + 0.2}
+            index={index * 4 + 1}
+            data={data}
+            instrumentIndex={
+              instrumentIndex
+            }
+            setDataItem={setDataItem}
           ></RowItem>
           <RowItem
             key={index + 0.3}
+            index={index * 4 + 2}
+            data={data}
+            instrumentIndex={
+              instrumentIndex
+            }
+            setDataItem={setDataItem}
           ></RowItem>
           <RowItem
             key={index + 0.4}
+            index={index * 4 + 3}
+            data={data}
+            instrumentIndex={
+              instrumentIndex
+            }
+            setDataItem={setDataItem}
             className=" border-r-slate-300"
           ></RowItem>
         </div>
@@ -67,18 +73,18 @@ const generateCells = (
 
 const Row: React.FC<RowProps> = ({
   count,
-  timeline = false,
+  data,
+  instrumentIndex,
+  setDataItem,
 }) => {
   return (
-    <div
-      className={twMerge(
-        "w-auto h-[36px] flex flex-row rounded justify-start items-start box-border",
-        timeline
-          ? "bg-gradient-to-r from-indigo-600 via-purple-600 to-orange-600 "
-          : "bg-[#1e1e1e]"
+    <div className="w-auto h-[36px] flex flex-row rounded justify-start items-start box-border bg-[#1e1e1e]">
+      {generateCells(
+        count,
+        data,
+        instrumentIndex,
+        setDataItem
       )}
-    >
-      {generateCells(count, timeline)}
     </div>
   );
 };
