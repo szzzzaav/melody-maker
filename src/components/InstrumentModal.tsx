@@ -167,7 +167,7 @@ export const InstrumentModal: React.FC<
             }
           >
             <div className="flex items-center gap-2">
-              <span>试听</span>
+              <span>Preview</span>
               <IoMdMusicalNote />
             </div>
           </button>
@@ -177,7 +177,7 @@ export const InstrumentModal: React.FC<
               onClick={onClose}
               className="px-4 py-2 bg-orange-600 text-neutral-200 rounded hover:bg-orange-700 transition-colors"
             >
-              取消
+              Cancel
             </button>
             <button
               onClick={handleSelect}
@@ -187,7 +187,7 @@ export const InstrumentModal: React.FC<
                 !selectedOctave
               }
             >
-              确认
+              Confirm
             </button>
           </div>
         </div>
