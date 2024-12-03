@@ -1,32 +1,29 @@
 import { useState } from "react";
+import {
+  Note,
+  Octave,
+  InstrumentName,
+} from "../types/instruments";
+import { instrumentIcons } from "../constants/instrumentIcons";
+import { instrumentRanges } from "../constants/instruments";
+import {
+  getAvailableNotes,
+  getAvailableOctaves,
+  playInstrumentSound,
+} from "../utils/instrumentUtils";
 import VolumeKnob from "./VolumeKnob";
 import RangeSlider from "./RangeSlider";
-import {
-  GiDrumKit,
-  GiGuitar,
-  GiTunePitch,
-  GiGuitarBassHead,
-} from "react-icons/gi";
-import { CgPiano } from "react-icons/cg";
+import { GiTunePitch } from "react-icons/gi";
 import { IoMdMusicalNote } from "react-icons/io";
-import * as Tone from "tone";
-import instrumentRanges from "../constants/instrumentRanges";
 
 interface InstrumentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelect: (
-    instrument: string,
+    instrument: InstrumentName,
     pitch: string
   ) => void;
 }
-
-const instruments = {
-  piano: <CgPiano />,
-  guitar: <GiGuitar />,
-  drums: <GiDrumKit />,
-  bass: <GiGuitarBassHead />,
-};
 
 export const InstrumentModal: React.FC<
   InstrumentModalProps
@@ -34,28 +31,28 @@ export const InstrumentModal: React.FC<
   const [
     selectedInstrument,
     setSelectedInstrument,
-  ] = useState("piano");
+  ] = useState<InstrumentName>("piano");
   const [
     selectedNote,
     setSelectedNote,
-  ] = useState("");
+  ] = useState<Note>("");
   const [
     selectedOctave,
     setSelectedOctave,
-  ] = useState("");
+  ] = useState<Octave>("");
 
-  // 根据选择的乐器获取可用的音符和八度音
-  const availableNotes = Object.keys(
-    instrumentRanges[
-      selectedInstrument as keyof typeof instrumentRanges
-    ]
-  );
+  const availableNotes =
+    getAvailableNotes(
+      selectedInstrument,
+      instrumentRanges
+    );
   const availableOctaves =
-    selectedNote && selectedInstrument
-      ? instrumentRanges[
-          selectedInstrument as keyof typeof instrumentRanges
-        ][selectedNote]
-      : [];
+    getAvailableOctaves(
+      selectedInstrument,
+      selectedNote,
+      instrumentRanges
+    );
+
   const handleSelectNote = (
     note: string
   ) => {
@@ -63,7 +60,7 @@ export const InstrumentModal: React.FC<
     setSelectedOctave("");
   };
   const handleInstrumentChange = (
-    name: string
+    name: InstrumentName
   ) => {
     setSelectedInstrument(name);
     setSelectedNote("");
@@ -89,20 +86,20 @@ export const InstrumentModal: React.FC<
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 w-auto h-auto">
-      <div className="bg-neutral-800 p-6 rounded-lg w-96">
+      <div className="bg-neutral-800 p-6 rounded-lg min-w-96">
         <h2 className="text-neutral-200 text-lg mb-4">
           <GiTunePitch />
         </h2>
         <div className="mb-2">
           <div className="grid grid-cols-2 gap-4">
             {Object.entries(
-              instruments
+              instrumentIcons
             ).map(([name, icon]) => (
               <button
                 key={name}
                 onClick={() =>
                   handleInstrumentChange(
-                    name
+                    name as InstrumentName
                   )
                 }
                 className={`flex items-center justify-center gap-2 p-4 rounded-lg transition-colors ${
@@ -196,31 +193,4 @@ export const InstrumentModal: React.FC<
       </div>
     </div>
   );
-};
-
-const playInstrumentSound = async (
-  instrument: string,
-  note: string
-) => {
-  try {
-    await Tone.start();
-    const sampler = new Tone.Sampler({
-      urls: {
-        [note]: `${note}.mp3`,
-      },
-      baseUrl: `/sounds/${instrument}/`,
-      onload: () => {
-        sampler.triggerAttackRelease(
-          note,
-          "1n"
-        );
-        // 播放完成后释放资源
-        setTimeout(() => {
-          sampler.dispose();
-        }, 2000);
-      },
-    }).toDestination();
-  } catch (err) {
-    console.error("音频播放失败:", err);
-  }
 };
