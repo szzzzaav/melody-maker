@@ -56,8 +56,12 @@ export const InstrumentModal: React.FC<
           selectedInstrument as keyof typeof instrumentRanges
         ][selectedNote]
       : [];
-
-  // 当乐器改变时重置音符和八度音的选择
+  const handleSelectNote = (
+    note: string
+  ) => {
+    setSelectedNote(note);
+    setSelectedOctave("");
+  };
   const handleInstrumentChange = (
     name: string
   ) => {
@@ -128,7 +132,7 @@ export const InstrumentModal: React.FC<
             <VolumeKnob
               note={selectedNote}
               notes={availableNotes}
-              setNote={setSelectedNote}
+              setNote={handleSelectNote}
             />
           </div>
         </div>
@@ -158,7 +162,7 @@ export const InstrumentModal: React.FC<
                 );
               }
             }}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
             disabled={
               !selectedNote ||
               !selectedOctave
