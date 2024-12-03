@@ -82,6 +82,86 @@ export const InstrumentModal: React.FC<
     }
   };
 
+  const renderInstrumentControls =
+    () => {
+      if (
+        selectedInstrument === "bass"
+      ) {
+        const availableSounds =
+          Object.entries(
+            instrumentRanges[
+              selectedInstrument
+            ]
+          );
+
+        return (
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            {availableSounds.map(
+              ([note, octaves]) =>
+                octaves.map(
+                  (octave) => (
+                    <button
+                      key={`${note}${octave}`}
+                      onClick={() => {
+                        setSelectedNote(
+                          note as Note
+                        );
+                        setSelectedOctave(
+                          octave as Octave
+                        );
+                      }}
+                      className={`p-3 rounded-lg transition-colors ${
+                        selectedNote ===
+                          note &&
+                        selectedOctave ===
+                          octave
+                          ? "bg-indigo-600 text-white"
+                          : "bg-neutral-700 text-neutral-300 hover:bg-neutral-600"
+                      }`}
+                    >
+                      {`${note}${octave} Bass`}
+                    </button>
+                  )
+                )
+            )}
+          </div>
+        );
+      }
+
+      return (
+        <>
+          <div>
+            <h3 className="text-neutral-200 w-full flex items-center justify-center">
+              {`${selectedNote}-${selectedOctave}` || (
+                <IoMdMusicalNote />
+              )}
+            </h3>
+            <div className="w-full h-auto p-2">
+              <VolumeKnob
+                note={selectedNote}
+                notes={availableNotes}
+                setNote={
+                  handleSelectNote
+                }
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <RangeSlider
+              selectedOctave={
+                selectedOctave
+              }
+              setSelectedOctave={
+                setSelectedOctave
+              }
+              octaves={availableOctaves}
+            />
+          </div>
+        </>
+      );
+    };
+
   if (!isOpen) return null;
 
   return (
@@ -119,43 +199,26 @@ export const InstrumentModal: React.FC<
             ))}
           </div>
         </div>
-        <div>
-          <h3 className="text-neutral-200 w-full flex items-center justify-center">
-            {`${selectedNote}-${selectedOctave}` || (
-              <IoMdMusicalNote />
-            )}
-          </h3>
-          <div className="w-full h-auto p-2">
-            <VolumeKnob
-              note={selectedNote}
-              notes={availableNotes}
-              setNote={handleSelectNote}
-            />
-          </div>
-        </div>
 
-        <div className="mb-4">
-          <RangeSlider
-            selectedOctave={
-              selectedOctave
-            }
-            setSelectedOctave={
-              setSelectedOctave
-            }
-            octaves={availableOctaves}
-          />
-        </div>
+        {renderInstrumentControls()}
 
         <div className="flex justify-between gap-2 mt-4">
           <button
             onClick={() => {
+              console.log(
+                selectedInstrument
+              );
               if (
                 selectedNote &&
                 selectedOctave
               ) {
                 playInstrumentSound(
                   selectedInstrument,
-                  `${selectedNote}${selectedOctave}`
+                  `${selectedNote}${selectedOctave}`,
+                  selectedInstrument ===
+                    "drums"
+                    ? "wav"
+                    : "mp3"
                 );
               }
             }}

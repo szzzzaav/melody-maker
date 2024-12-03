@@ -33,21 +33,27 @@ export const getAvailableOctaves = (
 export const playInstrumentSound =
   async (
     instrument: string,
-    note: string
+    note: string,
+    format: string = "mp3"
   ) => {
     try {
+      const soundPath = `/sounds/${instrument}/${note}.${format}`;
+      console.log(
+        "Loading sound from:",
+        soundPath
+      );
+
       await Tone.start();
       const sampler = new Tone.Sampler({
         urls: {
-          [note]: `${note}.mp3`,
+          C4: `${note}.${format}`,
         },
         baseUrl: `/sounds/${instrument}/`,
         onload: () => {
           sampler.triggerAttackRelease(
-            note,
+            "C4",
             "1n"
           );
-          // 播放完成后释放资源
           setTimeout(() => {
             sampler.dispose();
           }, 2000);
