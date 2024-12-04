@@ -17,6 +17,14 @@ interface TimelineProps {
     val: Instrument[]
   ) => void;
   instruments: Instrument[];
+  currentBeat: number;
+  setCurrentBeat: (
+    beat: number
+  ) => void;
+  isPlaying: boolean;
+  setIsPlaying: (
+    playing: boolean
+  ) => void;
 }
 
 const Timeline: React.FC<
@@ -27,6 +35,10 @@ const Timeline: React.FC<
   setCount,
   setInstruments,
   instruments,
+  currentBeat,
+  setCurrentBeat,
+  isPlaying,
+  setIsPlaying,
 }) => {
   const [duration, setDuration] =
     useState(initialDuration);
@@ -64,6 +76,15 @@ const Timeline: React.FC<
     }
   };
 
+  const handlePlay = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      setCurrentBeat(0);
+    } else {
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <div className="w-full flex justify-start h-[35px] box-border">
       <div className="flex flex-row items-center gap-4 px-5 w-auto justify-start py-2">
@@ -89,7 +110,14 @@ const Timeline: React.FC<
           >
             <AiOutlinePlus />
           </button>
-          <button className="p-1 bg-neutral-800 rounded hover:bg-neutral-700 text-neutral-200">
+          <button
+            onClick={handlePlay}
+            className={`p-1 rounded hover:bg-neutral-700 text-neutral-200 ${
+              isPlaying
+                ? "bg-neutral-600"
+                : "bg-neutral-800"
+            }`}
+          >
             <BsPlayFill />
           </button>
         </div>

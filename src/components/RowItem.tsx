@@ -11,6 +11,7 @@ interface RowItemProps {
     index: number
   ) => void;
   instrumentIndex: number;
+  isCurrentBeat?: boolean;
 }
 
 const RowItem: React.FC<
@@ -21,6 +22,7 @@ const RowItem: React.FC<
   index,
   instrumentIndex,
   setDataItem,
+  isCurrentBeat,
 }) => {
   return (
     <div
@@ -40,7 +42,10 @@ const RowItem: React.FC<
         );
       }}
       className={twMerge(
-        "w-[35px] h-[35px] box-border text-xs border-[1px] border-neutral-700 flex items-center justify-center",
+        "w-[35px] h-[35px] box-border text-xs border-[1px] flex items-center justify-center",
+        isCurrentBeat
+          ? "border-cyan-400"
+          : "border-neutral-700",
         className
       )}
     >

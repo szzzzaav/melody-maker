@@ -9,12 +9,14 @@ interface RowProps {
     val: number,
     index: number
   ) => void;
+  currentBeat: number;
 }
 
 const generateCells = (
   count: number,
   data: Instrument,
   instrumentIndex: number,
+  currentBeat: number,
   setDataItem?: (
     val: number,
     index: number
@@ -26,7 +28,7 @@ const generateCells = (
       return (
         <div
           key={index}
-          className="flex flex-row box-border "
+          className="flex flex-row box-border"
         >
           <RowItem
             key={index + 0.1}
@@ -36,8 +38,12 @@ const generateCells = (
             instrumentIndex={
               instrumentIndex
             }
+            isCurrentBeat={
+              currentBeat ===
+              index * 4 + 0
+            }
             setDataItem={setDataItem}
-          ></RowItem>
+          />
           <RowItem
             key={index + 0.2}
             index={index * 4 + 1}
@@ -45,8 +51,12 @@ const generateCells = (
             instrumentIndex={
               instrumentIndex
             }
+            isCurrentBeat={
+              currentBeat ===
+              index * 4 + 1
+            }
             setDataItem={setDataItem}
-          ></RowItem>
+          />
           <RowItem
             key={index + 0.3}
             index={index * 4 + 2}
@@ -54,8 +64,12 @@ const generateCells = (
             instrumentIndex={
               instrumentIndex
             }
+            isCurrentBeat={
+              currentBeat ===
+              index * 4 + 2
+            }
             setDataItem={setDataItem}
-          ></RowItem>
+          />
           <RowItem
             key={index + 0.4}
             index={index * 4 + 3}
@@ -63,9 +77,13 @@ const generateCells = (
             instrumentIndex={
               instrumentIndex
             }
+            isCurrentBeat={
+              currentBeat ===
+              index * 4 + 3
+            }
             setDataItem={setDataItem}
-            className=" border-r-slate-300"
-          ></RowItem>
+            className="border-r-slate-300"
+          />
         </div>
       );
     });
@@ -75,6 +93,7 @@ const Row: React.FC<RowProps> = ({
   count,
   data,
   instrumentIndex,
+  currentBeat,
   setDataItem,
 }) => {
   return (
@@ -83,6 +102,7 @@ const Row: React.FC<RowProps> = ({
         count,
         data,
         instrumentIndex,
+        currentBeat,
         setDataItem
       )}
     </div>

@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  useState,
+  useEffect,
+} from "react";
 import { SideBar } from "./SideBar";
 import { TrackContainer } from "./TrackContainer";
 import { Instrument } from "../types/instruments";
@@ -11,6 +14,32 @@ const Beat: React.FC<
   const [col, setCol] = useState(4);
   const [instruments, setInstruments] =
     useState<Instrument[]>([]);
+  const [currentBeat, setCurrentBeat] =
+    useState(0);
+  const [isPlaying, setIsPlaying] =
+    useState(false);
+
+  useEffect(() => {
+    let intervalId: ReturnType<
+      typeof setInterval
+    >;
+
+    if (isPlaying) {
+      intervalId = setInterval(() => {
+        setCurrentBeat(
+          (prev) =>
+            (prev + 1) % (col * 4)
+        );
+      }, 250); // 每拍250ms，即每秒4拍
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isPlaying, col]);
+
   const setDataItem = (
     instrumentIndex: number,
     dataIndex: number
@@ -44,6 +73,12 @@ const Beat: React.FC<
           setInstruments={
             setInstruments
           }
+          currentBeat={currentBeat}
+          setCurrentBeat={
+            setCurrentBeat
+          }
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
         />
       </div>
       <div className="ml-8">
@@ -51,6 +86,7 @@ const Beat: React.FC<
           col={col}
           instruments={instruments}
           setDataItem={setDataItem}
+          currentBeat={currentBeat}
         />
       </div>
     </div>

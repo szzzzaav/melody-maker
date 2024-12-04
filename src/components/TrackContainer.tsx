@@ -10,6 +10,7 @@ interface TrackContainerProps {
     instrumentIndex: number,
     dataIndex: number
   ) => void;
+  currentBeat: number;
 }
 
 export const TrackContainer: React.FC<
@@ -19,6 +20,7 @@ export const TrackContainer: React.FC<
   col,
   instruments,
   setDataItem,
+  currentBeat,
 }) => {
   return (
     <div className="w-full flex flex-col h-full relative z-10">
@@ -37,6 +39,7 @@ export const TrackContainer: React.FC<
               data={item}
               instrumentIndex={index}
               setDataItem={setDataItem}
+              currentBeat={currentBeat}
             />
           )
         )}
