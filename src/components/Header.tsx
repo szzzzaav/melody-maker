@@ -11,7 +11,9 @@ const Header: React.FC<
         <div className="flex flex-col gap-4 px-5 py-7 w-full">
           <div className="flex flex-row h-auto items-center w-full gap-x-4 text-md font-medium cursor-pointer hover:text-white transition text-neutral-200 py-1">
             <SiMusicbrainz />
-            <div>Easy-BeatMaker</div>
+            <div>
+              SonarCraft-BeatMaker
+            </div>
           </div>
           <div className="flex flex-row h-auto items-center w-full gap-x-4 text-md font-medium cursor-pointer hover:text-white transition text-neutral-400 py-1">
             <FaItunes />

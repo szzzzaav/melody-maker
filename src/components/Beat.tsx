@@ -34,9 +34,8 @@ const Beat: React.FC<
       )
     );
   };
-  console.log(instruments);
   return (
-    <div className="w-full h-full rounded-l-lg bg-neutral-900 flex flex-row p-1 overflow-auto custom-scrollbar gap-1 items-start justify-start relative">
+    <div className="w-full h-full rounded-l-lg border-2 border-neutral-800 flex flex-row py-2 overflow-auto custom-scrollbar gap-1 items-start bg-[rgba(0,0,0,0.3)] justify-start relative">
       <div className="sticky left-2 z-20">
         <SideBar
           count={col}

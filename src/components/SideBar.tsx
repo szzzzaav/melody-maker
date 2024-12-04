@@ -27,7 +27,7 @@ export const SideBar: React.FC<
   setInstruments,
 }) => {
   return (
-    <div className="w-full h-full flex flex-col bg-neutral-900">
+    <div className="w-full h-full flex flex-col bg-neutral-900 rounded-lg p-1">
       <Timeline
         initialDuration={1}
         setCount={setCount}
