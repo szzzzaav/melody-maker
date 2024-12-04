@@ -2,6 +2,8 @@ import { useState } from "react";
 import {
   BsPlayFill,
   BsSoundwave,
+  BsArrowCounterclockwise,
+  BsPauseFill,
 } from "react-icons/bs";
 import {
   AiOutlinePlus,
@@ -25,6 +27,9 @@ interface TimelineProps {
   setIsPlaying: (
     playing: boolean
   ) => void;
+  handleSetStart: (
+    beat: number
+  ) => void;
 }
 
 const Timeline: React.FC<
@@ -35,7 +40,6 @@ const Timeline: React.FC<
   setCount,
   setInstruments,
   instruments,
-  currentBeat,
   setCurrentBeat,
   isPlaying,
   setIsPlaying,
@@ -77,12 +81,15 @@ const Timeline: React.FC<
   };
 
   const handlePlay = () => {
-    if (isPlaying) {
-      setIsPlaying(false);
-      setCurrentBeat(0);
-    } else {
-      setIsPlaying(true);
-    }
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleReset = () => {
+    setCurrentBeat(0);
   };
 
   return (
@@ -110,15 +117,26 @@ const Timeline: React.FC<
           >
             <AiOutlinePlus />
           </button>
+          {isPlaying ? (
+            <button
+              onClick={handlePause}
+              className="p-1 bg-neutral-600 rounded hover:bg-neutral-700 text-neutral-200"
+            >
+              <BsPauseFill />
+            </button>
+          ) : (
+            <button
+              onClick={handlePlay}
+              className="p-1 bg-neutral-800 rounded hover:bg-neutral-700 text-neutral-200"
+            >
+              <BsPlayFill />
+            </button>
+          )}
           <button
-            onClick={handlePlay}
-            className={`p-1 rounded hover:bg-neutral-700 text-neutral-200 ${
-              isPlaying
-                ? "bg-neutral-600"
-                : "bg-neutral-800"
-            }`}
+            onClick={handleReset}
+            className="p-1 bg-neutral-800 rounded hover:bg-neutral-700 text-neutral-200"
           >
-            <BsPlayFill />
+            <BsArrowCounterclockwise />
           </button>
         </div>
       </div>

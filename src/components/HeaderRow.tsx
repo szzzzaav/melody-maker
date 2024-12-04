@@ -3,51 +3,99 @@ import { twMerge } from "tailwind-merge";
 interface HeaderRowProps {
   count: number;
   timeline: boolean;
+  currentBeat?: number;
+  setCurrentBeat?: (
+    beat: number
+  ) => void;
+  startBeat?: number;
+  setStartBeat?: (beat: number) => void;
+  isPlaying?: boolean;
+  setIsPlaying?: (
+    playing: boolean
+  ) => void;
 }
 
 const HeaderRow: React.FC<
   HeaderRowProps
-> = ({ count, timeline }) => {
+> = ({
+  count,
+  timeline,
+  currentBeat,
+  setCurrentBeat,
+  startBeat,
+  setStartBeat,
+  isPlaying,
+  setIsPlaying,
+}) => {
   let timeIdx = 0.9;
   return (
     <div
       className={twMerge(
         "w-auto h-[36px] flex flex-row rounded justify-start items-start box-border",
         timeline
-          ? "bg-gradient-to-r from-indigo-600 via-purple-600 to-orange-600 "
+          ? "bg-gradient-to-r from-indigo-600 via-purple-600 to-orange-600"
           : "bg-[#1e1e1e]"
       )}
     >
       {Array(count)
         .fill(null)
-        .map(() => {
-          if (timeline) {
-            timeIdx += 0.1;
-            timeIdx = Number(
-              timeIdx.toFixed(1)
-            );
-            if (
-              Math.abs(
-                (timeIdx % 1) - 0.4
-              ) < 0.0001
-            ) {
-              timeIdx =
-                Math.floor(timeIdx) + 1;
-            }
-            return (
-              <div
-                key={timeIdx}
-                className={twMerge(
-                  "flex flex-row box-border border-r-[1px] border-neutral-700",
-                  "w-[140px]"
-                )}
-              >
-                <div className="w-[140px] h-[35px] box-border text-xs text-neutral-200 font-semibold flex items-center pl-2">
-                  {timeIdx.toFixed(1)}
-                </div>
-              </div>
-            );
+        .map((_, index) => {
+          timeIdx += 0.1;
+          timeIdx = Number(
+            timeIdx.toFixed(1)
+          );
+          if (
+            Math.abs(
+              (timeIdx % 1) - 0.4
+            ) < 0.0001
+          ) {
+            timeIdx =
+              Math.floor(timeIdx) + 1;
           }
+          return (
+            <div
+              key={timeIdx}
+              className={twMerge(
+                "flex flex-row box-border border-r-[1px] border-neutral-700 cursor-pointer hover:bg-opacity-10 hover:bg-cyan-400",
+                "w-[140px]",
+                currentBeat &&
+                  Math.floor(
+                    currentBeat / 4
+                  ) === index
+                  ? "bg-opacity-20 bg-cyan-400"
+                  : "",
+                startBeat &&
+                  Math.floor(
+                    startBeat / 4
+                  ) === index
+                  ? "bg-opacity-20 bg-green-400"
+                  : ""
+              )}
+              onClick={() => {
+                if (
+                  setStartBeat &&
+                  setCurrentBeat
+                ) {
+                  setStartBeat(
+                    index * 4
+                  );
+                  setCurrentBeat(
+                    index * 4
+                  );
+                  if (
+                    isPlaying &&
+                    setIsPlaying
+                  ) {
+                    setIsPlaying(false);
+                  }
+                }
+              }}
+            >
+              <div className="w-[140px] h-[35px] box-border text-xs text-neutral-200 font-semibold flex items-center pl-2">
+                {timeIdx.toFixed(1)}
+              </div>
+            </div>
+          );
         })}
     </div>
   );

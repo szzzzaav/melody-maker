@@ -11,6 +11,15 @@ interface TrackContainerProps {
     dataIndex: number
   ) => void;
   currentBeat: number;
+  setCurrentBeat?: (
+    beat: number
+  ) => void;
+  isPlaying?: boolean;
+  setIsPlaying?: (
+    playing: boolean
+  ) => void;
+  startBeat?: number;
+  setStartBeat?: (beat: number) => void;
 }
 
 export const TrackContainer: React.FC<
@@ -21,6 +30,11 @@ export const TrackContainer: React.FC<
   instruments,
   setDataItem,
   currentBeat,
+  setCurrentBeat,
+  isPlaying,
+  setIsPlaying,
+  startBeat,
+  setStartBeat,
 }) => {
   return (
     <div className="w-full flex flex-col h-full relative z-10">
@@ -29,6 +43,14 @@ export const TrackContainer: React.FC<
           <HeaderRow
             count={col}
             timeline={true}
+            currentBeat={currentBeat}
+            setCurrentBeat={
+              setCurrentBeat
+            }
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
+            startBeat={startBeat}
+            setStartBeat={setStartBeat}
           />
         </div>
         {instruments.map(

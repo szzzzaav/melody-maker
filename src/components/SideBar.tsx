@@ -23,6 +23,9 @@ interface SideBarProps {
   setIsPlaying: (
     playing: boolean
   ) => void;
+  handleSetStart: (
+    beat: number
+  ) => void;
 }
 
 export const SideBar: React.FC<
@@ -37,6 +40,7 @@ export const SideBar: React.FC<
   setCurrentBeat,
   isPlaying,
   setIsPlaying,
+  handleSetStart,
 }) => {
   return (
     <div className="w-full h-full flex flex-col bg-neutral-900 rounded-lg p-1">
@@ -50,6 +54,7 @@ export const SideBar: React.FC<
         setCurrentBeat={setCurrentBeat}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
+        handleSetStart={handleSetStart}
       />
       <Instruments
         count={count}

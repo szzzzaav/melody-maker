@@ -16,6 +16,8 @@ const Beat: React.FC<
     useState<Instrument[]>([]);
   const [currentBeat, setCurrentBeat] =
     useState(0);
+  const [startBeat, setStartBeat] =
+    useState(0);
   const [isPlaying, setIsPlaying] =
     useState(false);
 
@@ -31,6 +33,8 @@ const Beat: React.FC<
             (prev + 1) % (col * 4)
         );
       }, 250); // 每拍250ms，即每秒4拍
+    } else {
+      setCurrentBeat(startBeat);
     }
 
     return () => {
@@ -38,7 +42,7 @@ const Beat: React.FC<
         clearInterval(intervalId);
       }
     };
-  }, [isPlaying, col]);
+  }, [isPlaying, col, startBeat]);
 
   const setDataItem = (
     instrumentIndex: number,
@@ -63,6 +67,15 @@ const Beat: React.FC<
       )
     );
   };
+
+  const handleSetStart = (
+    beat: number
+  ) => {
+    setStartBeat(beat);
+    setCurrentBeat(beat);
+    setIsPlaying(false);
+  };
+
   return (
     <div className="w-full h-full rounded-l-lg border-2 border-neutral-800 flex flex-row py-2 overflow-auto custom-scrollbar gap-1 items-start bg-[rgba(0,0,0,0.3)] justify-start relative">
       <div className="sticky left-2 z-20">
@@ -79,6 +92,9 @@ const Beat: React.FC<
           }
           isPlaying={isPlaying}
           setIsPlaying={setIsPlaying}
+          handleSetStart={
+            handleSetStart
+          }
         />
       </div>
       <div className="ml-8">
@@ -87,6 +103,13 @@ const Beat: React.FC<
           instruments={instruments}
           setDataItem={setDataItem}
           currentBeat={currentBeat}
+          setCurrentBeat={
+            setCurrentBeat
+          }
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          startBeat={startBeat}
+          setStartBeat={setStartBeat}
         />
       </div>
     </div>
