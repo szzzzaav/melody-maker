@@ -86,7 +86,7 @@ export const Instruments: React.FC<
   };
 
   return (
-    <div className="flex flex-col h-auto w-full bg-neutral-900 rounded">
+    <div className="flex flex-col h-auto w-full bg-neutral-900 rounded select-none">
       {instruments.map(
         (item, index) => {
           const instrumentName =
@@ -112,9 +112,16 @@ export const Instruments: React.FC<
                       ]
                     }
                   </span>
-                  <span>
-                    {item.name}
-                  </span>
+                  <div
+                    className="max-w-[180px] overflow-hidden group"
+                    title={item.name}
+                  >
+                    <div className="whitespace-nowrap overflow-hidden text-ellipsis">
+                      <span className="inline-block group-hover:animate-marquee">
+                        {item.name}
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <button

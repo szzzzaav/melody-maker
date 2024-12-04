@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import { Instrument } from "../types/instruments";
+import { playInstrumentSound } from "../utils/instrumentUtils";
 
 interface RowItemProps {
   className?: string;
@@ -27,6 +28,15 @@ const RowItem: React.FC<
         setDataItem?.(
           instrumentIndex,
           index
+        );
+        const [instrument, note] =
+          data.name.split("-");
+        playInstrumentSound(
+          instrument,
+          note,
+          instrument === "drums"
+            ? "wav"
+            : "mp3"
         );
       }}
       className={twMerge(
