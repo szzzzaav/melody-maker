@@ -4,12 +4,7 @@ import { instrumentIcons } from "../constants/instrumentIcons";
 import { IoIosSettings } from "react-icons/io";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { getRandomHexColor } from "../utils/getRandomColor";
-
-type Instrument = {
-  name: string;
-  color: string;
-  data: number[];
-};
+import { Instrument } from "../types/instruments";
 
 interface InstrumentsProps {
   instruments: Instrument[];
@@ -48,6 +43,8 @@ export const Instruments: React.FC<
       newInstruments[editingIndex] = {
         ...instruments[editingIndex],
         name: `${instrument}-${pitch}`,
+        instrument: instrument,
+        pitch: pitch,
       };
       setInstruments(newInstruments);
       setEditingIndex(null);
@@ -57,6 +54,8 @@ export const Instruments: React.FC<
         ...instruments,
         {
           name: `${instrument}-${pitch}`,
+          instrument: instrument,
+          pitch: pitch,
           color: color,
           data: Array.from(
             { length: count * 4 },

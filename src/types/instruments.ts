@@ -20,4 +20,6 @@ export type Instrument = {
   name: string;
   color: string;
   data: number[];
+  instrument: string;
+  pitch: string;
 };
