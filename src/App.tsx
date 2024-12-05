@@ -1,6 +1,5 @@
 import Background from "./components/Background";
 import Beat from "./components/Beat";
-// import BeatMaker from './components/BeatMaker'
 import Header from "./components/Header";
 
 function App() {
