@@ -30,6 +30,31 @@ export const getAvailableOctaves = (
   );
 };
 
+export const loadInstrumentSound =
+  async (
+    instrument: string,
+    note: string,
+    format: string = "mp3"
+  ) => {
+    try {
+      await Tone.start();
+      const sampler = new Tone.Sampler({
+        urls: {
+          C4: `${note}.${format}`,
+        },
+        baseUrl: `/sounds/${instrument}/`,
+        onload: () => {
+          return sampler;
+        },
+      }).toDestination();
+    } catch (err) {
+      console.error(
+        "音频播放失败:",
+        err
+      );
+    }
+  };
+
 export const playInstrumentSound =
   async (
     instrument: string,
@@ -37,12 +62,6 @@ export const playInstrumentSound =
     format: string = "mp3"
   ) => {
     try {
-      const soundPath = `/sounds/${instrument}/${note}.${format}`;
-      console.log(
-        "Loading sound from:",
-        soundPath
-      );
-
       await Tone.start();
       const sampler = new Tone.Sampler({
         urls: {

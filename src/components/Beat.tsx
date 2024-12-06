@@ -5,6 +5,7 @@ import {
 import { SideBar } from "./SideBar";
 import { TrackContainer } from "./TrackContainer";
 import { Instrument } from "../types/instruments";
+import * as Tone from "tone";
 
 interface BeatMakerProps {}
 
@@ -20,6 +21,62 @@ const Beat: React.FC<
     useState(0);
   const [isPlaying, setIsPlaying] =
     useState(false);
+  const [samplers, setSamplers] =
+    useState<
+      Record<string, Tone.Sampler>
+    >({});
+  // 初始化音频采样器
+  const initSampler = async (
+    instrument: Instrument
+  ) => {
+    if (!samplers[instrument.name]) {
+      await Tone.start();
+      const sampler = new Tone.Sampler({
+        urls: {
+          C4: `${instrument.pitch}.${
+            instrument.instrument ===
+            "drums"
+              ? "wav"
+              : "mp3"
+          }`,
+        },
+        baseUrl: `/sounds/${instrument.instrument}/`,
+        onload: () => {
+          setSamplers((prev) => ({
+            ...prev,
+            [instrument.name]: sampler,
+          }));
+        },
+      }).toDestination();
+    }
+  };
+
+  // 播放当前节拍的所有乐器声音
+  const playCurrentBeat = (
+    beatIndex: number
+  ) => {
+    instruments.forEach(
+      (instrument) => {
+        if (
+          instrument.data[beatIndex] ===
+            1 &&
+          samplers[instrument.name]
+        ) {
+          samplers[
+            instrument.name
+          ].triggerAttackRelease(
+            "C4",
+            "8n"
+          );
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    // 初始化所有乐器的采样器
+    instruments.forEach(initSampler);
+  }, [instruments]);
 
   useEffect(() => {
     let intervalId: ReturnType<
@@ -27,12 +84,17 @@ const Beat: React.FC<
     >;
 
     if (isPlaying) {
+      Tone.start();
+      Tone.Transport.bpm.value = 120;
+
       intervalId = setInterval(() => {
-        setCurrentBeat(
-          (prev) =>
-            (prev + 1) % (col * 4)
-        );
-      }, 250); // 每拍250ms，即每秒4拍
+        setCurrentBeat((prev) => {
+          const nextBeat =
+            (prev + 1) % (col * 4);
+          playCurrentBeat(nextBeat);
+          return nextBeat;
+        });
+      }, 250);
     } else {
       setCurrentBeat(startBeat);
     }
@@ -42,7 +104,13 @@ const Beat: React.FC<
         clearInterval(intervalId);
       }
     };
-  }, [isPlaying, col, startBeat]);
+  }, [
+    isPlaying,
+    col,
+    startBeat,
+    instruments,
+    samplers,
+  ]);
 
   const setDataItem = (
     instrumentIndex: number,
